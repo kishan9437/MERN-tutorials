@@ -1,0 +1,68 @@
+.adminNav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.adminContainer {
+    display: grid;
+    padding-top: 0;
+    grid-template-columns: 1fr 3fr;
+}
+
+.adminList {
+    flex-direction: column;
+    list-style-type: none;
+}
+
+.adminList li {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+}
+
+.container.admin-users button.btn {
+    margin-top: 10px;
+}
+
+td {
+    font-size: 1.7rem;
+    letter-spacing: 0.1rem;
+    padding: 1rem;
+    text-align: center;
+    color: var(--dark-color);
+    width: 30rem;
+}
+
+table {
+    background-color: var(--bg-color);
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 7px 29px 0px;
+    border-collapse: collapse;
+    border-radius: 1rem;
+}
+
+thead tr {
+    box-shadow: 0 0.3rem 0 gray !important;
+}
+
+th {
+    font-size: 1.7rem;
+    letter-spacing: 0.1rem;
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--dark-color);
+    width: 30rem;
+}
+
+body tr {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(10rem, 1fr));
+    align-items: center;
+    box-shadow: 0 0.3rem 0 gray;
+    margin-bottom: 10px;
+    border-bottom: 4px solid transparent;
+    /* color: var(--bg-color); */
+
+    &:last-child {
+        box-shadow: none;
+    }
+}
