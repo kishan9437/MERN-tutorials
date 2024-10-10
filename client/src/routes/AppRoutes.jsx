@@ -5,15 +5,13 @@ import Contact from '../frontend/pages/Contact';
 import Service from '../frontend/pages/Service';
 import Register from '../frontend/pages/Register';
 import Login from '../frontend/pages/Login';
-import FrontEndLayout from '../frontend/FrontEndLayout';
+import FrontEndLayout from '../frontend/Layout';
 import Error from '../frontend/pages/Error';
 import Logout from '../frontend/pages/Logout';
-import AdminLayout from '../admin/Admin-Layout';
-import AdminUsers from '../admin/pages/Admin-Users';
-import AdminContacts from '../admin/pages/Admin-Contacts';
-// import AdminServices from './pages/Admin-services';
-// import AdminHome from './pages/Admin-Home';
-import AdminUpdate from '../admin/pages/Admin-Update';
+import AdminLayout from '../admin/Layout';
+import AdminUsers from '../admin/pages/Users';
+import AdminContacts from '../admin/pages/Contacts';
+import AdminUpdate from '../admin/pages/Update';
 
 export default function App() {
   return (
@@ -33,8 +31,6 @@ export default function App() {
             <Route path='users' element={<AdminUsers />} />
             <Route path='users/:id/edit' element={<AdminUpdate />} />
             <Route path='contact' element={<AdminContacts />} />
-            {/* <Route path='service' element={<AdminServices />} />
-            <Route path='home' element={<AdminHome />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,8 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import AppRoutes from './routes/AppRoutes.jsx'
-import './styles/frontend/style.css'
-import './styles/admin/style.css'
+import './styles/admin.css'
+import './styles/frontEnd.css'
 import 'react-phone-input-2/lib/style.css';
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import { ToastContainer } from 'react-toastify';

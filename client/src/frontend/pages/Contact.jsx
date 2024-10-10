@@ -66,7 +66,7 @@ export default function Contact() {
         {/* contact page main  */}
         <div className="container grid grid-two-cols">
           <div className="contact-img">
-            <img src="/assets/frontend-images/images/support.png" alt="we are always ready to help" />
+            <img src="/assets/images/support.png" alt="we are always ready to help" />
           </div>
 
           <section className="section-form">

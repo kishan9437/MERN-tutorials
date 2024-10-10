@@ -3,6 +3,8 @@ import { useAuth } from "../../contexts/AuthContext.jsx";
 import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
 import 'reactjs-popup/dist/index.css';
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function AdminUsers() {
     const [users, setUsers] = useState([]);
@@ -11,10 +13,12 @@ export default function AdminUsers() {
     const { authorizationToken } = useAuth();
     const [sortOrder, setSortOrder] = useState("asc");
     const [selectedStatus, setSelectedStatus] = useState('all');
-    // const [selectedUser, setSelectedUser] = useState(null);  // Currently selected user for status change
+    const [loading, setLoading] = useState(true);
 
     const getAllUsersData = async (order = "asc") => {
         try {
+            setLoading(true);  // Show loading spinner while fetching data
+
             const response = await fetch(`http://localhost:5000/api/admin/users?order=${order}`, {
                 method: "GET",
                 headers: {
@@ -25,8 +29,10 @@ export default function AdminUsers() {
             // console.log(data);
             setUsers(data);
             setFilterUsers(data);
+            setLoading(false);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
@@ -103,7 +109,7 @@ export default function AdminUsers() {
         let filtered = users;
 
         if (status !== "all") {
-            filtered = users.filter(user => user.status === status); // Filter users by status
+            filtered = users.filter(user => user.status === status); 
         }
 
         if (search !== "") {
@@ -116,7 +122,6 @@ export default function AdminUsers() {
                 );
             });
         }
-
         setFilterUsers(filtered);
     }
     const deleteUser = async (id) => {
@@ -127,9 +132,7 @@ export default function AdminUsers() {
                     Authorization: authorizationToken,
                 },
             })
-            // console.log(response)
             await response.json()
-            // console.log(`users after delete ${data}`);
 
             if (response.ok) {
                 getAllUsersData();
@@ -154,7 +157,7 @@ export default function AdminUsers() {
                         <option value="reject">Reject</option>
                     </select>
                     <div className="search_name">
-                        <input type="search" placeholder="Search" style={{ height: "30px", width: '200px', marginRight: '5px' ,fontSize:'16px',paddingLeft:'8px'}} value={search} onChange={handleSeach}></input>
+                        <input type="search" placeholder="Search" style={{ height: "30px", width: '200px', marginRight: '5px', fontSize: '16px', paddingLeft: '8px' }} value={search} onChange={handleSeach}></input>
                         {/* <button style={{ height: '30px', padding: "0px 8px", }}>Search</button> */}
                     </div>
                 </div>
@@ -171,9 +174,19 @@ export default function AdminUsers() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filterUsers.length > 0 ? (
+                            {loading ? (
+                                Array(3).fill().map((_, index) => (
+                                    <tr key={index}>
+                                        <td><Skeleton width={100} /></td>
+                                        <td><Skeleton width={100} /></td>
+                                        <td><Skeleton width={100} /></td>
+                                        <td><Skeleton width={100} /></td>
+                                        
+                                    </tr>
+                                ))
+                            ) : filterUsers.length > 0 ? (
                                 filterUsers.map((curUser, index) => {
-                                    return <tr key={index}>
+                                    return (<tr key={index}>
                                         <td>{curUser.username}</td>
                                         <td>{curUser.email}</td>
                                         <td>{curUser.phone}</td>
@@ -187,7 +200,7 @@ export default function AdminUsers() {
                                                             <button style={{ marginTop: '5px' }} onClick={() => { handleStatusChange(curUser._id, 'active'); close() }}>Active</button>
                                                             <button style={{ marginTop: '5px' }} onClick={() => { handleStatusChange(curUser._id, 'inactive'); close() }}>Inactive</button>
                                                             <button style={{ marginTop: '5px' }} onClick={() => { handleStatusChange(curUser._id, 'reject'); close() }}>Reject</button>
-                                                            <button style={{ marginTop: '5px' }} onClick={close}>Cancel</button>
+                                                            {/* <button style={{ marginTop: '5px' }} onClick={close}>Cancel</button> */}
                                                         </div>
                                                     </div>
                                                 )}
@@ -196,12 +209,14 @@ export default function AdminUsers() {
                                         <td><Link to={`/admin/users/${curUser._id}/edit`}>Edit</Link></td>
                                         <td><button onClick={() => deleteUser(curUser._id)}>Delete</button></td>
                                     </tr>
+                                    );
                                 })
                             ) : (
                                 <tr>
                                     <td colSpan="5">User not found</td>
                                 </tr>
-                            )}
+                            )
+                            }
                         </tbody>
                     </table>
                 </div>

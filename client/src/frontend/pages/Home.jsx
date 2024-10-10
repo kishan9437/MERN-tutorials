@@ -26,7 +26,7 @@ export default function Home() {
             </div>
 
             <div className="hero-image">
-              <img src="/assets/frontend-images/images/home.png" alt="home image" width="400" height="500"/>
+              <img src="/assets/images/home.png" alt="home image" width="400" height="500"/>
             </div>
           </div>
         </section>
@@ -58,7 +58,7 @@ export default function Home() {
           {/* hero images  */}
           <div className="hero-image">
             <img
-              src="/assets/frontend-images/images/design.png"
+              src="/assets/images/design.png"
               alt="coding together"
               width="400"
               height="500"

@@ -16,7 +16,7 @@ export default function Service() {
 
               return (<div className="card" key={index}>
                 <div className="card-img">
-                  <img src="/assets/frontend-images/images/design.png" alt="services" width='200' />
+                  <img src="/assets/images/design.png" alt="services" width='200' />
                 </div>
 
                 <div className="card-details">

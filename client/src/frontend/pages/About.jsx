@@ -44,7 +44,7 @@ export default function About() {
             </div>
             <div className="hero-image">
               <img
-                src="/assets/frontend-images/images/about.png"
+                src="/assets/images/about.png"
                 alt="coding buddies "
                 width="400"
                 height="500"

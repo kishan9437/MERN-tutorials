@@ -5,7 +5,7 @@ const app = express();
 const authRoute = require('./router/frontend-router/auth-router');
 const contactRoute = require('./router/frontend-router/contact-router');
 const serviceRoute = require('./router/frontend-router/service-router');
-const adminRoute = require('./router/admin-router/admin-router');
+const adminRoute = require('./router/admin-router/router');
 const connectDB = require('./config/db');
 const errorMiddleware = require("./middlewares/error-middleware");
 
