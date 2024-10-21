@@ -14,21 +14,30 @@ export default function AdminUsers() {
     const [sortOrder, setSortOrder] = useState("asc");
     const [selectedStatus, setSelectedStatus] = useState('all');
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const usersPerPage=5;
 
-    const getAllUsersData = async (order = "asc") => {
+    const getAllUsersData = async (page = 1, order = "asc") => {
         try {
             setLoading(true);  // Show loading spinner while fetching data
 
-            const response = await fetch(`http://localhost:5000/api/admin/users?order=${order}`, {
+            const response = await fetch(`http://localhost:5000/api/admin/users?order=${order}&page=${page}&limit=5`, {
                 method: "GET",
                 headers: {
                     Authorization: authorizationToken,
                 },
             })
             const data = await response.json()
-            // console.log(data);
-            setUsers(data);
-            setFilterUsers(data);
+            // console.log(data.users);
+            setUsers(data.users);
+            // console.log(data)
+            setCurrentPage(data.currentPage);
+            setTotalPages(data.totalPages);
+            // console.log(currentPage)
+            // console.log(totalPages)
+            setFilterUsers(data.users);
+            // console.log(filterUsers)
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -50,14 +59,15 @@ export default function AdminUsers() {
             setFilterUsers(filtered);
         } else {
             const searchTerm = value.split(' ');
-            const filter = filtered.filter((user) => {
+            filtered = filtered.filter((user) => {
                 return searchTerm.some((term) =>
                     user.username.toLowerCase().includes(term) ||
                     user.email.toLowerCase().includes(term) ||
                     user.phone.includes(term)
                 )
             })
-            setFilterUsers(filter);
+            // console.log(filterUsers);
+            setFilterUsers(filtered);
         }
     }
 
@@ -109,7 +119,7 @@ export default function AdminUsers() {
         let filtered = users;
 
         if (status !== "all") {
-            filtered = users.filter(user => user.status === status); 
+            filtered = filtered.filter(user => user.status === status);
         }
 
         if (search !== "") {
@@ -141,86 +151,133 @@ export default function AdminUsers() {
             console.log(error);
         }
     }
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+            getAllUsersData(page, sortOrder);
+        }
+    }
     useEffect(() => {
-        getAllUsersData();
-    }, [])
+        getAllUsersData(currentPage, sortOrder);
+    }, [currentPage, sortOrder]);
     return (
         <>
-            <section className="admin-users-section">
-                <div className="container">
-                    <h1>Admin User Data</h1>
-                    <label htmlFor="status" style={{ position: 'relative', top: '22px', left: '290px' }}>Status : </label>
-                    <select name="Status" value={selectedStatus} onChange={handleStatus} style={{ height: '32px', marginTop: '21px', width: '200px', marginLeft: '280px', cursor: 'pointer' }}>
-                        <option value="all">All</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="reject">Reject</option>
-                    </select>
-                    <div className="search_name">
-                        <input type="search" placeholder="Search" style={{ height: "30px", width: '200px', marginRight: '5px', fontSize: '16px', paddingLeft: '8px' }} value={search} onChange={handleSeach}></input>
-                        {/* <button style={{ height: '30px', padding: "0px 8px", }}>Search</button> */}
+            <div className="custom-screen custom-bg custom-text">
+                <main className="custom-container custom-padding">
+                    <div className="custom-header">
+                        <h1 className="custom-heading">Admin User Data</h1>
                     </div>
-                </div>
-                <div className="container admin-users">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th onClick={handleSort} style={{ cursor: "pointer" }}>Name {sortOrder === "asc" ? "↑" : "↓"}</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {loading ? (
-                                Array(3).fill().map((_, index) => (
-                                    <tr key={index}>
-                                        <td><Skeleton width={100} /></td>
-                                        <td><Skeleton width={100} /></td>
-                                        <td><Skeleton width={100} /></td>
-                                        <td><Skeleton width={100} /></td>
-                                        
+                    <div className="custom-table-margin">
+                        <label className="custom-flex custom-items-baseline custom-gap">
+                            <span className="custom-text">Search: </span>
+                            <input
+                                type="search"
+                                className="custom-input"
+                                value={search}
+                                onChange={handleSeach}
+                                placeholder="Search"
+                            />
+                            <label className="custom-label">
+                                <span className="custom-text">Status: </span>
+                                <select
+                                    className="custom-select"
+                                    name="Status"
+                                    value={selectedStatus}
+                                    onChange={handleStatus}
+                                >
+                                    <option value="all">All</option>
+                                    <option value="ACTIVE">Active</option>
+                                    <option value="INACTIVE">Inactive</option>
+                                    <option value="REJECT">Reject</option>
+                                </select>
+                            </label>
+                        </label>
+                        <div className="admin-users" style={{ marginTop: "15px" }}>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th onClick={handleSort}>Name {sortOrder === "asc" ? "↑" : "↓"}</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Status</th>
+                                        <th>Update</th>
+                                        <th>Delete</th>
                                     </tr>
-                                ))
-                            ) : filterUsers.length > 0 ? (
-                                filterUsers.map((curUser, index) => {
-                                    return (<tr key={index}>
-                                        <td>{curUser.username}</td>
-                                        <td>{curUser.email}</td>
-                                        <td>{curUser.phone}</td>
-                                        <td>
-                                            <Popup trigger={<span style={{ cursor: "pointer", color: "blue" }}>{curUser.status}</span>}
-                                                position="right center" modal closeOnDocumentClick>
-                                                {(close) => (
-                                                    <div>
-                                                        <h3 style={{ fontSize: '20px', textAlign: 'center' }}>Change Status for {curUser.username}</h3>
-                                                        <div style={{ display: 'flex', flexDirection: 'column', margin: "10px" }}>
-                                                            <button style={{ marginTop: '5px' }} onClick={() => { handleStatusChange(curUser._id, 'active'); close() }}>Active</button>
-                                                            <button style={{ marginTop: '5px' }} onClick={() => { handleStatusChange(curUser._id, 'inactive'); close() }}>Inactive</button>
-                                                            <button style={{ marginTop: '5px' }} onClick={() => { handleStatusChange(curUser._id, 'reject'); close() }}>Reject</button>
-                                                            {/* <button style={{ marginTop: '5px' }} onClick={close}>Cancel</button> */}
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </Popup>
-                                        </td>
-                                        <td><Link to={`/admin/users/${curUser._id}/edit`}>Edit</Link></td>
-                                        <td><button onClick={() => deleteUser(curUser._id)}>Delete</button></td>
-                                    </tr>
-                                    );
-                                })
-                            ) : (
-                                <tr>
-                                    <td colSpan="5">User not found</td>
-                                </tr>
-                            )
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                                </thead>
+                                <tbody>
+                                    {loading ? (
+                                        Array(5).fill().map((_, index) => (
+                                            <tr key={index}>
+                                                <td><Skeleton width={100} /></td>
+                                                <td><Skeleton width={100} /></td>
+                                                <td><Skeleton width={100} /></td>
+                                                <td><Skeleton width={100} /></td>
+                                                <td><Skeleton width={100} /></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        ))
+                                    ) : filterUsers.length > 0 ? (
+                                        filterUsers.map((curUser, index) => (
+                                            <tr key={curUser._id}>
+                                                <td>{(currentPage - 1) * usersPerPage + index + 1}</td>
+                                                <td>{curUser.username}</td>
+                                                <td>{curUser.email}</td>
+                                                <td>{curUser.phone}</td>
+                                                <td>
+                                                    <Popup trigger={<span className={`cursor-pointer ${curUser.status.toLowerCase() === 'active' ? 'status-active' : curUser.status.toLowerCase() === 'inactive' ? 'status-inactive' : 'status-offline'}`}>{curUser.status}</span>}
+                                                        position="right center" modal closeOnDocumentClick>
+                                                        {(close) => (
+                                                            <div className="popup">
+                                                                <h3 style={{ textAlign: 'center', fontSize: 'large', marginTop: "10px" }}>Change Status for {curUser.username}</h3>
+                                                                <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px', marginBottom: '10px' }}>
+                                                                    <button className="active" onClick={() => { handleStatusChange(curUser._id, 'ACTIVE'); close() }}>ACTIVE</button>
+                                                                    <button className="inactive" style={{ marginTop: "10px" }} onClick={() => { handleStatusChange(curUser._id, 'INACTIVE'); close() }}>INACTIVE</button>
+                                                                    <button className="reject" style={{ marginTop: "10px" }} onClick={() => { handleStatusChange(curUser._id, 'REJECT'); close() }}>REJECT</button>
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                    </Popup>
+                                                </td>
+                                                <td><Link to={`/admin/users/${curUser._id}/edit`}>Edit</Link></td>
+                                                <td><button onClick={() => deleteUser(curUser._id)}>Delete</button></td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="6">User not found</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                            <div className="pagination-container">
+                                <div className="pagination">
+                                    <span>Page {currentPage} of {totalPages}</span>
+                                    <div className="pagination-buttons">
+                                        <button
+                                            className="pagination-btn"
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                            disabled={currentPage === 1}
+                                        >
+                                            ← Prev
+                                        </button>
+                                        <button className="show-total-btn">Total Page {totalPages}</button>
+
+                                        <button
+                                            className="pagination-btn"
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            Next →
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main >
+            </div >
         </>
     )
 }

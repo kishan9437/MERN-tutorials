@@ -3,12 +3,29 @@ const Contact = require('../../models/contact-model');
 
 const getAllUsers = async (req, res) => {
     try {
+        const page=parseInt(req.query.page) || 1;
+        const limit=parseInt(req.query.limit) || 5;
+        const skip=(page-1)*limit;
+        const totalUsers= await User.countDocuments();
+
         const sortOrder = req.query.order === "desc" ? -1 : 1;
-        const users = await User.find().sort({ username: sortOrder }).select({ password: 0 });
+        const users = await User.find()
+            .sort({username:1})
+            .select({ password: 0 })
+            .skip(skip)
+            .limit(limit);
         if (!users || users.length === 0) {
             return res.status(404).json({ message: "No users found" });
         }
-        return res.status(200).json(users);
+
+        const totalPages=Math.ceil(totalUsers/limit);
+
+        return res.status(200).json({
+            users,
+            currentPage: page,
+            totalPages,
+            totalUsers
+        });
     } catch (error) {
         next(error);
     }

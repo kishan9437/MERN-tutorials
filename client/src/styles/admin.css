@@ -1,3 +1,258 @@
+.custom-container {
+    max-width: 132rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.custom-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+}
+
+.custom-select {
+    border-radius: 0.375rem;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.custom-select:focus {
+    border-color: #5a67d8;
+    box-shadow: 0 0 0 0.2rem rgba(66, 153, 225, 0.5);
+}
+
+.admin-users {
+    margin-top: 15px;
+}
+
+.admin-users table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.admin-users th,
+.admin-users td {
+    padding: 12px 15px;
+    border: 1px solid #e1e1e1;
+    text-align: left;
+    font-size: 16px;
+    color: #4a4a4a;
+}
+
+.admin-users th {
+    background-color: #f9f9f9;
+    color: #4a4a4a;
+    cursor: pointer;
+    /* font-size: 15px; */
+}
+
+.admin-users tr:hover {
+    background-color: #f1f1f1;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.admin-users .status-active {
+    /* color: green; */
+    background: rgb(162, 223, 162);
+    border-radius: 16px;
+    color: green;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 3px;
+    font-weight: bold;
+}
+
+.admin-users .status-inactive {
+    /* color: orange; */
+    background: rgb(241, 216, 170);
+    border-radius: 16px;
+    color: orange;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 3px;
+    font-weight: bold;
+}
+
+.admin-users .status-offline {
+    background: rgb(228, 167, 167);
+    border-radius: 16px;
+    color: maroon;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 3px;
+    font-weight: bold;
+}
+
+.admin-users .popup {
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.popup-content {
+    width: 30%;
+}
+
+.admin-users .popup button {
+    margin-top: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-users .popup .active {
+    background-color: green;
+    color: white;
+}
+
+.admin-users .popup .inactive {
+    background-color: orange;
+    color: white;
+
+}
+
+.admin-users .popup .reject {
+    background-color: red;
+    color: white;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.pagination {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination span {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.pagination-btn,
+.show-total-btn {
+    padding: 8px 16px;
+    font-size: 2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination-btn:hover:not(:disabled),
+.show-total-btn:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pagination span {
+        font-size: 0.9rem;
+    }
+
+    .pagination-btn,
+    .show-total-btn {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .pagination-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pagination-buttons .pagination-btn,
+    .pagination-buttons .show-total-btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination span {
+        font-size: 0.8rem;
+    }
+
+    .pagination-btn,
+    .show-total-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 640px) {
+    .custom-padding {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .custom-padding {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+.custom-table-margin {
+    margin-top: 1.5rem;
+}
+
+.custom-heading {
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+.custom-flex {
+    display: flex;
+}
+
+.custom-gap {
+    gap: 1rem;
+}
+
+.custom-text {
+    color: #4a5568;
+}
+
+.custom-input {
+    border-radius: 0.375rem;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 0.375rem 0.75rem;
+    outline: none;
+}
+
+.custom-input:focus {
+    border-color: #a3bffa;
+    box-shadow: 0 0 0 0.2rem rgba(165, 180, 252, 0.5);
+}
+
 .adminNav ul {
     display: flex;
     flex-direction: column;
@@ -24,7 +279,7 @@
     margin-top: 10px;
 }
 
-td {
+/* td {
     font-size: 1.7rem;
     letter-spacing: 0.1rem;
     padding: 1rem;
@@ -62,7 +317,7 @@ body tr {
     border-bottom: 4px solid transparent;
     /* color: var(--bg-color); */
 
-    &:last-child {
+/* &:last-child {
         box-shadow: none;
-    }
-}
+    
+} */

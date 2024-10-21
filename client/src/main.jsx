@@ -7,6 +7,7 @@ import 'react-phone-input-2/lib/style.css';
 import { AuthProvider } from './contexts/AuthContext.jsx'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
